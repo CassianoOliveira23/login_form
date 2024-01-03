@@ -1,11 +1,57 @@
 const init = () => {
+
+    const validateEmail = (event) => {
+        const input = event.currentTarget;
+        const regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+        const emailTest = regex = regex.test(input.value);
+
+        if(!emailTest){
+            submitButton.setAttribute('disabled', 'disabled')
+            input.nextElementSibling.classList.add('error');
+        } else {
+            submitButton.removeAttribute('disabled');
+            input.nextElementSibling.classList.remove('error');
+        }
+    }
+
+    const validatePassword = (event) => {
+        const input = event.currentTarget;
+
+        if(input.value.lenght < 8){
+            submitButton.setAttribute('disabled', 'disabled');
+            input.nextElementSibling.classList.add('error');
+        } else {
+            submitButton.removeAttribute('disabled');
+            input.nextElementSibling.classList.remove('error');
+        }
+    }
+
     const inputEmail = document.querySelector('input[type="email"]');
     const inputPassword = document.querySelector('input[type="password"]');
     const submitButton = document.querySelector('.login-submit');
 
+
+    inputEmail.addEventListener('input', validateEmail);
+    inputPassword.addEventListener('input', validatePassword);
+
+
+    const errorHandler = () => {
+        submitButton.classList.remove('success');
+        submitButton.classList.add('error');
+        submitButton.textContent = "Error"
+    }
+
+    const successHandler = () => {
+        submitButton.classList.remove('error');
+        submitButton.classList.add('success');
+        submitButton.textContent = "Sent!"
+    }
+
     if(submitButton){
         submitButton.addEventListener('click', (event) => {
             event.preventDefault();
+
+            submitButton.textContent = "...Loading"
 
             fetch('https://reqres.in/api/login', {
                 method: 'POST',
@@ -17,9 +63,12 @@ const init = () => {
                     password: inputPassword.value,
                 })
             }).then((response) => {
-                return response.json();
-            }).then((data) => {
-                console.log(data)
+                if(response.status !== 200) {
+                     return errorHandler();
+                }
+                successHandler();
+            }).catch(() => {
+                errorHandler();
             })
         })
     }
@@ -27,6 +76,3 @@ const init = () => {
 
 window.onload = init;
 
-
-//login: eve.holt@reqres.in
-//password: cityslicka

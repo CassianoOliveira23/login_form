@@ -6,6 +6,9 @@
     --black: #303030;
     --gray: #929292;
     --light-gray: #cfcfcf;
+    --input-error: red;
+    --button-disabled: #acacac;
+    --button-success: rgb(18, 151, 107);
 }
 
 
@@ -63,6 +66,14 @@ body {
     width: 100%;
 }
 
+.login-input-border.error{
+    background: var(--input-error);
+}
+
+.login-input-border.error::after{
+    background: var(--input-error);
+}
+
 .login-input-border{
     height: 1px;
     width: 100%;
@@ -95,8 +106,21 @@ body {
     transition: .5s ease-in-out;
 }
 
+.login-submit.error{
+    background: var(--input-error);
+}
 
-.login-submit{
+.login-submit.success{
+    background: var(--button-success);
+}
+
+
+.login-submit:disabled {
+    background: var(--button-disabled);
+    cursor: not-allowed;
+}
+
+.login-submit:hover{
     background-position: right;
 }
 
