@@ -6,7 +6,7 @@
     --black: #303030;
     --gray: #929292;
     --light-gray: #cfcfcf;
-    --input-error: red;
+    --input-error: rgb(202, 12, 12);
     --button-disabled: #acacac;
     --button-success: rgb(18, 151, 107);
 }
