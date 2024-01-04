@@ -1,28 +1,43 @@
-const init = () => {
 
+const init = () => {
     const validateEmail = (event) => {
         const input = event.currentTarget;
         const regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
-        const emailTest = regex = regex.test(input.value);
+        const emailTest = regex.test(input.value);
 
-        if(!emailTest){
-            submitButton.setAttribute('disabled', 'disabled')
+        if (!emailTest) {
             input.nextElementSibling.classList.add('error');
         } else {
-            submitButton.removeAttribute('disabled');
             input.nextElementSibling.classList.remove('error');
         }
+
+        handleButtonState();
     }
 
     const validatePassword = (event) => {
         const input = event.currentTarget;
 
-        if(input.value.lenght < 8){
-            submitButton.setAttribute('disabled', 'disabled');
+        if (input.value.length < 8) {
             input.nextElementSibling.classList.add('error');
         } else {
-            submitButton.removeAttribute('disabled');
             input.nextElementSibling.classList.remove('error');
+        }
+
+        handleButtonState();
+    }
+
+    const handleButtonState = () => {
+        const emailInput = document.querySelector('input[type="email"]');
+        const passwordInput = document.querySelector('input[type="password"]');
+        const submitButton = document.querySelector('.login-submit');
+
+        const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value);
+        const isValidPassword = passwordInput.value.length >= 8;
+
+        if (isValidEmail && isValidPassword) {
+            submitButton.removeAttribute('disabled');
+        } else {
+            submitButton.setAttribute('disabled', 'disabled');
         }
     }
 
@@ -30,10 +45,8 @@ const init = () => {
     const inputPassword = document.querySelector('input[type="password"]');
     const submitButton = document.querySelector('.login-submit');
 
-
     inputEmail.addEventListener('input', validateEmail);
     inputPassword.addEventListener('input', validatePassword);
-
 
     const errorHandler = () => {
         submitButton.classList.remove('success');
@@ -47,7 +60,7 @@ const init = () => {
         submitButton.textContent = "Sent!"
     }
 
-    if(submitButton){
+    if (submitButton) {
         submitButton.addEventListener('click', (event) => {
             event.preventDefault();
 
@@ -63,8 +76,8 @@ const init = () => {
                     password: inputPassword.value,
                 })
             }).then((response) => {
-                if(response.status !== 200) {
-                     return errorHandler();
+                if (response.status !== 200) {
+                    return errorHandler();
                 }
                 successHandler();
             }).catch(() => {
@@ -75,4 +88,5 @@ const init = () => {
 }
 
 window.onload = init;
+
 
